@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Segmentation - Armando Ochoa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2C3E50 0%, #3498DB 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .emoji {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .project-title {
+            font-size: 2.2em;
+            color: #2C3E50;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .description {
+            font-size: 1.2em;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .results {
+            background: #f8f9fa;
+            border-left: 5px solid #3498DB;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .results h2 {
+            color: #2C3E50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .results ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .results li {
+            font-size: 1.2em;
+            padding: 12px 0;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .results li::before {
+            content: "✓";
+            color: #2ECC71;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+            justify-content: center;
+        }
+
+        .tech-badge {
+            background: #E74C3C;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1em;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .tech-badge.python { background: #3776AB; }
+        .tech-badge.pandas { background: #150458; }
+        .tech-badge.sklearn { background: #F7931E; }
+        .tech-badge.jupyter { background: #F37626; }
+
+        .cta-section {
+            text-align: center;
+            padding: 40px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
+            color: white;
+            padding: 18px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: 700;
+            box-shadow: 0 5px 20px rgba(46, 204, 113, 0.4);
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.6);
+        }
+
+        .cta-button.secondary {
+            background: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .cta-button.secondary:hover {
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.6);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #2C3E50;
+            color: white;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .footer a {
+            color: #3498DB;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .project-title {
+                font-size: 1.8em;
+            }
+
+            .stat-number {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="emoji">📊</div>
+            <h1>Telecom Customer Segmentation</h1>
+            <p>Data Analytics Project</p>
+        </div>
+
+        <div class="content">
+            <p class="description">
+                Analicé <strong>53,902 registros de llamadas</strong> de una empresa de telefonía virtual 
+                para identificar patrones de comportamiento y segmentar clientes automáticamente usando 
+                machine learning.
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">53,902</div>
+                    <div class="stat-label">Llamadas Analizadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">307</div>
+                    <div class="stat-label">Clientes Segmentados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$2.4M</div>
+                    <div class="stat-label">Revenue Analizado</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">81.5%</div>
+                    <div class="stat-label">Eficiencia Operacional</div>
+                </div>
+            </div>
+
+            <div class="results">
+                <h2>🔍 Resultados Principales</h2>
+                <ul>
+                    <li><strong>63% clientes de alto valor</strong> identificados como core del negocio</li>
+                    <li><strong>98 clientes en riesgo crítico</strong> detectados para estrategias de retención</li>
+                    <li><strong>4 segmentos distintos</strong> de comportamiento identificados con K-Means</li>
+                    <li><strong>96 operadores</strong> identificados que requieren capacitación prioritaria</li>
+                    <li><strong>Eficiencia del 81.5%</strong> superando el benchmark de industria (75%)</li>
+                </ul>
+            </div>
+
+            <h2 style="text-align: center; color: #2C3E50; margin: 40px 0 20px;">🛠️ Stack Técnico</h2>
+            <div class="tech-stack">
+                <span class="tech-badge python">Python</span>
+                <span class="tech-badge pandas">Pandas</span>
+                <span class="tech-badge sklearn">Scikit-learn</span>
+                <span class="tech-badge jupyter">Jupyter</span>
+                <span class="tech-badge">Matplotlib</span>
+                <span class="tech-badge">Seaborn</span>
+            </div>
+
+            <div class="cta-section">
+                <h2 style="color: #2C3E50; margin-bottom: 30px;">📁 Ver Proyecto Completo</h2>
+                <a href="./index.html" class="cta-button">📊 Ver Análisis Interactivo</a>
+                <a href="https://github.com/Armando8a-dev/customer-segmentation-data" class="cta-button secondary" target="_blank">
+                    💻 Ver Código en GitHub
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Armando Ochoa</strong> | Data Analyst</p>
+            <p>
+                <a href="https://github.com/Armando8a-dev" target="_blank">GitHub</a> • 
+                <a href="tu-linkedin" target="_blank">LinkedIn</a> • 
+                <a href="mailto:tu-email">Email</a>
+            </p>
+            <p style="margin-top: 15px; opacity: 0.7; font-size: 0.9em;">
+                Proyecto creado con ❤️ usando Python y Jupyter | 2025
+            </p>
+        </div>
+    </div>
+</body>
+</html>
